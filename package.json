@@ -1,0 +1,26 @@
+{
+	"name": "firebase-cloud-messaging-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"compile": "tsc",
+		"start": "npm run compile && node ./dist/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"dependencies": {
+		"@apollo/server": "^4.11.3",
+		"cors": "^2.8.5",
+		"express": "^4.21.2",
+		"firebase-admin": "^13.1.0",
+		"graphql": "^16.10.0"
+	},
+	"devDependencies": {
+		"@types/node": "^22.13.7",
+		"nodemon": "^3.1.9",
+		"typescript": "^5.8.2"
+	}
+}
