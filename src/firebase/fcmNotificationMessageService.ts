@@ -1,15 +1,15 @@
 import admin from "./firebaseAdmin.js";
 import { Message } from "firebase-admin/messaging";
 
-export const sendNotification = async (
+export const sendNotificationMessage = async (
 	token: string,
 	title: string,
 	body: string,
 	link?: string
 ) => {
 	const message: Message = {
-		notification: { title, body },
 		token,
+		notification: { title, body },
 		webpush: link && {
 			fcmOptions: {
 				link,

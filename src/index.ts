@@ -4,7 +4,8 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import express from "express";
 import http from "http";
 import cors from "cors";
-import { sendNotification } from "./firebase/fcmService.js";
+import { sendNotificationMessage } from "./firebase/fcmNotificationMessageService.js";
+import { sendDataMessage } from "./firebase/fcmDataMessageService.js";
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -28,7 +29,8 @@ const typeDefs = `#graphql
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     books: [Book]
-	sendNotification(token: String): Response!
+	sendNotifiMessage(token: String): Response!
+	sendDataMessage(token: String): Response!
   }
 `;
 
@@ -48,13 +50,35 @@ const books = [
 const resolvers = {
 	Query: {
 		books: () => books,
-		sendNotification: async (_, args: { token: string }) => {
+		sendNotifiMessage: async (_, args: { token: string }) => {
 			const token = args.token;
 			const title = "New Sale";
 			const body = "New Sale added to your account";
 			const link = "https://fcm-client-omega.vercel.app/about";
 			try {
-				const response = await sendNotification(
+				const response = await sendNotificationMessage(
+					token,
+					title,
+					body,
+					link
+				);
+				if (response) {
+					return {
+						status: "success",
+						message: "Notification sent successfully",
+					};
+				}
+			} catch (error) {
+				throw error;
+			}
+		},
+		sendDataMessage: async (_, args: { token: string }) => {
+			const token = args.token;
+			const title = "New Sale";
+			const body = "New Sale added to your account";
+			const link = "https://fcm-client-omega.vercel.app/about";
+			try {
+				const response = await sendDataMessage(
 					token,
 					title,
 					body,
