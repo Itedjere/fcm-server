@@ -30,7 +30,7 @@ const typeDefs = `#graphql
   type Query {
     books: [Book]
 	sendNotifiMessage(token: String): Response!
-	sendDataMessage(token: String): Response!
+	sendDataMessage(tokens: [String!]!): Response!
   }
 `;
 
@@ -72,14 +72,14 @@ const resolvers = {
 				throw error;
 			}
 		},
-		sendDataMessage: async (_, args: { token: string }) => {
-			const token = args.token;
+		sendDataMessage: async (_, args: { tokens: string[] }) => {
+			const tokens = args.tokens;
 			const title = "New Sale";
 			const body = "New Sale added to your account";
 			const link = "https://fcm-client-omega.vercel.app/about";
 			try {
 				const response = await sendDataMessage(
-					token,
+					tokens,
 					title,
 					body,
 					link
